@@ -28,8 +28,10 @@ public class Controller {
 //            Vnexpress new1 = new Vnexpress("Java IO Tutorial","http");
 //            Vnexpress new2 = new Vnexpress("1 IO Tutorial","http");
 //            Vnexpress new3 = new Vnexpress("2 IO Tutorial","http");
+            //Create observable list to store Vnexpress data type
             ObservableList<Vnexpress> newList = FXCollections.observableArrayList();
 
+            // Connect to Vnexpress and scrape
             Document doc = Jsoup.connect("https://vnexpress.net/thoi-su").get();
             Elements body = doc.select("div.col-left-folder-v2");
             Element ele = body.first();
@@ -45,6 +47,7 @@ public class Controller {
                 newList.add(news);
 
             }
+            // Display each article to listview
             vnexpressListView.getItems().setAll(newList);
             vnexpressListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -52,12 +55,14 @@ public class Controller {
             System.out.println(e);
         }
     }
+    //Function return the content inside the article
     public String returnContent(String url) throws IOException{
         Document doc = Jsoup.connect(url).get();
         Elements body = doc.getElementsByClass("sidebar-1");
         Element content = body.first().child(2);
         return content.text();
     }
+    // Function process when user click on the article
     @FXML
     public void handleClickView() throws IOException{
         Vnexpress news = (Vnexpress) vnexpressListView.getSelectionModel().getSelectedItem();
